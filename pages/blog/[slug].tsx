@@ -13,6 +13,7 @@ import rehypeAutolinkHeadings from 'rehype-autolink-headings';
 import { unified } from 'unified';
 import remarkPrism from 'remark-prism';
 import Script from 'next/script';
+import { Seo } from '@/components/common';
 
 export interface BlogPageProps {
   post: Post;
@@ -23,6 +24,14 @@ export default function PostDetailPage({ post }: BlogPageProps) {
 
   return (
     <Box>
+      <Seo
+        data={{
+          title: post.title,
+          description: post.description,
+          url: `${process.env.HOST_URL}/blog/${post.slug}`,
+          thumbnailUrl: post.thumbnailUrl || '',
+        }}
+      />
       <Container>
         <h1>Post Detail </h1>
         <div dangerouslySetInnerHTML={{ __html: post.htmlContent }}></div>

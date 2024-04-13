@@ -1,14 +1,16 @@
-import { authApi } from '@/api-client';
+import { LoginForm } from '@/components/auth';
 import { useAuth } from '@/hooks';
+import { LoginPayload } from '@/models';
+import { Box, Paper, Typography } from '@mui/material';
 import { useRouter } from 'next/router';
 
 const LoginPage = () => {
-  const { login, logout, profile } = useAuth({ revalidateOnMount: false });
+  const { login, logout } = useAuth({ revalidateOnMount: false });
   const router = useRouter();
-  async function handleLogin() {
+  async function handleLogin(payload: LoginPayload) {
     try {
-      await login();
-      router.push('/about');
+      await login(payload);
+      router.push('/');
     } catch (error) {
       console.error(error);
     }
@@ -22,15 +24,23 @@ const LoginPage = () => {
     }
   }
   return (
-    <div>
-      <h1>Login Page</h1>
-
-      <p> {JSON.stringify(profile ?? {})}</p>
-      <button onClick={handleLogin}>Login</button>
-      {/* <button onClick={handleGetProfile}>Get profile</button> */}
-      <button onClick={handleLogout}>Logout</button>
-      <button onClick={() => router.push('/about')}>Go to About</button>
-    </div>
+    <Box>
+      <Paper
+        elevation={4}
+        sx={{
+          mx: 'auto',
+          mt: 8,
+          p: 4,
+          maxWidth: '480px',
+          textAlign: 'center',
+        }}
+      >
+        <Typography component={'h1'} variant="h5">
+          Login Page
+        </Typography>
+        <LoginForm onSubmit={handleLogin} />
+      </Paper>
+    </Box>
   );
 };
 
