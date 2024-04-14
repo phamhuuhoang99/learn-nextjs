@@ -1,6 +1,5 @@
 import { Facebook, Instagram, LinkedIn, Twitter } from '@mui/icons-material';
 import { Box, Icon, Stack, Typography } from '@mui/material';
-import React from 'react';
 
 type Props = {};
 

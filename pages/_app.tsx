@@ -1,10 +1,12 @@
 import axiosClient from '@/api-client/axios-client';
 import { EmptyLayout } from '@/components/layout';
 import { AppPropsWithLayout } from '@/models';
-import { SWRConfig } from 'swr';
-import { CssBaseline, ThemeProvider } from '@mui/material';
-import { CacheProvider } from '@emotion/react';
 import { createEmotionCache, theme } from '@/utils';
+import { CacheProvider } from '@emotion/react';
+import { CssBaseline, ThemeProvider } from '@mui/material';
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/ReactToastify.min.css';
+import { SWRConfig } from 'swr';
 import '../styles/globals.css';
 import '../styles/prism.css';
 
@@ -21,6 +23,7 @@ export default function App({
     <CacheProvider value={emotionCache}>
       <ThemeProvider theme={theme}>
         <CssBaseline />
+        <ToastContainer />
         <SWRConfig value={{ fetcher: (url) => axiosClient.get(url), shouldRetryOnError: false }}>
           <Layout>
             <Component {...pageProps} />

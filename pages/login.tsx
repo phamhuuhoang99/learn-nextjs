@@ -1,8 +1,10 @@
 import { LoginForm } from '@/components/auth';
 import { useAuth } from '@/hooks';
 import { LoginPayload } from '@/models';
+import { getErrorMessage } from '@/utils';
 import { Box, Paper, Typography } from '@mui/material';
 import { useRouter } from 'next/router';
+import { toast } from 'react-toastify';
 
 const LoginPage = () => {
   const { login, logout } = useAuth({ revalidateOnMount: false });
@@ -11,8 +13,9 @@ const LoginPage = () => {
     try {
       await login(payload);
       router.push('/');
-    } catch (error) {
-      console.error(error);
+    } catch (error: unknown) {
+      const message = getErrorMessage(error);
+      toast.error(message);
     }
   }
 
