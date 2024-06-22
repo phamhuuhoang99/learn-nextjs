@@ -26,9 +26,5 @@ export default function handler(req: NextApiRequest, res: NextApiResponse<any>) 
       changeOrigin: true,
       selfHandleResponse: false,
     });
-    // res.status(200).json({ name: 'PATCH - match all here' });
-    proxy.once('proxyRes', () => {
-      resolve(undefined);
-    });
   });
 }

@@ -8,3 +8,7 @@ export interface Work {
   createdAt: string;
   updatedAt: string;
 }
+
+export interface WorkFiltersPayload {
+  search: string;
+}

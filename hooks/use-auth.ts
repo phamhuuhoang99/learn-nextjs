@@ -1,8 +1,7 @@
 import { authApi } from '@/api-client';
 import { StorageKeys } from '@/constants';
 import { LoginPayload } from '@/models';
-import useSWR from 'swr';
-import { PublicConfiguration } from 'swr/_internal';
+import useSWR, { SWRConfiguration } from 'swr';
 
 function getUserInfo() {
   try {
@@ -13,7 +12,7 @@ function getUserInfo() {
   return null;
 }
 
-export function useAuth(options?: Partial<PublicConfiguration>) {
+export function useAuth(options?: Partial<SWRConfiguration>) {
   // profile
 
   const {

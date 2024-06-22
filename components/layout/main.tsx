@@ -7,14 +7,9 @@ import dynamic from 'next/dynamic';
 const Header = dynamic(() => import('../common/header').then((mod) => mod.default), { ssr: false });
 
 export function MainLayout({ children }: LayoutProps) {
-  useEffect(() => {
-    console.log('Admin Layout mounting');
-    return () => console.log('Admin unmouting');
-  }, []);
   return (
     <Stack minHeight={'100vh'}>
       <Header />
-
       <Box component={'main'} flexGrow={1}>
         {children}
       </Box>
