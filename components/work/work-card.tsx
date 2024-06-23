@@ -1,10 +1,11 @@
 import { Work } from '@/models';
 import { Box, Chip, Stack, Typography } from '@mui/material';
-import Image from "next/legacy/image";
+import Image from 'next/legacy/image';
 
 export interface WorkCardProps {
   work: Work;
 }
+export interface test {}
 
 export const WorkCard = ({ work }: WorkCardProps) => {
   return (
