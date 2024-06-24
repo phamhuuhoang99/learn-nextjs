@@ -18,6 +18,7 @@ export default function WorksPage() {
 
   const initFiltersPayload: WorkFiltersPayload = {
     search: filters.title_like || '',
+    selectedTagList: filters.tagList_like?.split('|') || [],
   };
 
   const { data, isLoading } = useWorkList({ params: filters, enabled: router.isReady });
@@ -40,7 +41,7 @@ export default function WorksPage() {
     );
   };
 
-  const handleFiltersChange = ({ search }: WorkFiltersPayload) => {
+  const handleFiltersChange = ({ search, tagList_like }: WorkFiltersPayload) => {
     router.push(
       {
         pathname: router.pathname,
@@ -48,6 +49,7 @@ export default function WorksPage() {
           ...filters,
           _page: 1,
           title_like: search,
+          tagList_like,
         },
       },
       undefined,

@@ -15,6 +15,7 @@ const WorksFilters = ({ initialValue, onSubmit }: WorkFiltersProps) => {
   const { control, handleSubmit } = useForm<WorkFiltersPayload>({
     defaultValues: {
       search: '',
+      selectedTagList: [],
       ...initialValue,
     },
   });
@@ -23,6 +24,9 @@ const WorksFilters = ({ initialValue, onSubmit }: WorkFiltersProps) => {
   const tagList = data.data || [];
 
   const handleLoginSubmit = async (payload: WorkFiltersPayload) => {
+    if (!payload) return;
+    payload.tagList_like = payload.selectedTagList?.join('|') || '';
+    delete payload.selectedTagList;
     await onSubmit?.(payload);
   };
 
@@ -53,6 +57,7 @@ const WorksFilters = ({ initialValue, onSubmit }: WorkFiltersProps) => {
         options={tagList}
         getOptionLabel={(option) => option}
         control={control}
+        onChange={() => debounceSearchChange()}
       />
     </Box>
   );
