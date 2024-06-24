@@ -3,8 +3,8 @@ import { WorkList } from '@/components/work';
 import WorksFilters from '@/components/work/work-filters';
 import { useWorkListInfinity } from '@/hooks';
 import { useWorkList } from '@/hooks/use-worklist';
-import { ListParams, WorkFiltersPayload } from '@/models';
-import { Box, Container, Pagination, Skeleton, Stack, Typography } from '@mui/material';
+import { ListParams, ListResponse, Work, WorkFiltersPayload } from '@/models';
+import { Box, Button, Container, Pagination, Skeleton, Stack, Typography } from '@mui/material';
 import { useRouter } from 'next/router';
 
 export interface WorksPageProps {}
@@ -24,6 +24,12 @@ export default function WorksPage() {
     params: filters,
     enabled: router.isReady,
   });
+
+  const workList: Array<Work> =
+    data?.reduce((result: Array<Work>, currentPage: ListResponse<Work>) => {
+      result.push(...currentPage.data);
+      return result;
+    }, []) || [];
 
   // const { _limit, _totalRows, _page } = data.pagination || {};
 
@@ -65,7 +71,11 @@ export default function WorksPage() {
             sx={{ display: 'inline-block', width: '100%', mt: 2, mb: 1 }}
           />
         )}
-        <WorkList workList={[]} loading={!router.isReady || isLoading} />
+        <WorkList workList={workList} loading={!router.isReady || isLoading} />
+
+        <Button variant="contained" onClick={() => setSize((x) => x + 1)}>
+          Load more
+        </Button>
       </Container>
     </Box>
   );
