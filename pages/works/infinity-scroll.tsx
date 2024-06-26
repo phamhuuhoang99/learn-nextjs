@@ -2,10 +2,10 @@ import { MainLayout } from '@/components/layout';
 import { WorkList } from '@/components/work';
 import WorksFilters from '@/components/work/work-filters';
 import { useWorkListInfinity } from '@/hooks';
-import { useWorkList } from '@/hooks/use-worklist';
 import { ListParams, ListResponse, Work, WorkFiltersPayload } from '@/models';
-import { Box, Button, Container, Pagination, Skeleton, Stack, Typography } from '@mui/material';
+import { Box, Button, CircularProgress, Container, Skeleton, Typography } from '@mui/material';
 import { useRouter } from 'next/router';
+import { useInView } from 'react-intersection-observer';
 
 export interface WorksPageProps {}
 
@@ -31,11 +31,17 @@ export default function WorksPage() {
       return result;
     }, []) || [];
 
-  // const { _limit, _totalRows, _page } = data.pagination || {};
+  const { ref } = useInView({
+    onChange(inView, entry) {
+      if (inView) {
+        setSize((x) => x + 1);
+      }
+    },
+  });
 
-  // const totalPages = Boolean(_totalRows) ? Math.ceil(_totalRows / _limit) : 0;
-
-  console.log('data::', data);
+  const totalRows = data?.[0].pagination?._totalRows || 0;
+  const showLoadMore = totalRows > workList.length;
+  const loadingMore = isValidating && workList.length > 0;
 
   const handleFiltersChange = ({ search, tagList_like }: WorkFiltersPayload) => {
     router.push(
@@ -72,10 +78,16 @@ export default function WorksPage() {
           />
         )}
         <WorkList workList={workList} loading={!router.isReady || isLoading} />
-
-        <Button variant="contained" onClick={() => setSize((x) => x + 1)}>
-          Load more
-        </Button>
+        {showLoadMore && (
+          <Button
+            ref={ref}
+            variant="contained"
+            onClick={() => setSize((x) => x + 1)}
+            disabled={loadingMore}
+          >
+            Load more {loadingMore && <CircularProgress size={24} />}
+          </Button>
+        )}
       </Container>
     </Box>
   );
