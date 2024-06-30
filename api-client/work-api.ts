@@ -6,6 +6,6 @@ export const workApi = {
     return axiosClient.get('/works', { params });
   },
   get(id: string): Promise<Work> {
-    return axiosClient.get(`/work/${id}`);
+    return axiosClient.get(`/works/${id}`);
   },
 };

@@ -11,7 +11,7 @@ export type AutocompleteFieldProps<T, K extends FieldValues> = Partial<
   label?: string;
   options: T[];
   getOptionLabel: (option: T) => string;
-  onChange: (selectedOptions: T[]) => void;
+  onChange?: (selectedOptions: T[]) => void;
 };
 
 const icon = <CheckBoxOutlineBlank fontSize="small" />;

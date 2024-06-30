@@ -9,6 +9,13 @@ export interface Work {
   updatedAt: string;
 }
 
+export interface WorkPayload extends Work {
+  thumbnail: null | {
+    file: File | null;
+    previewUrl: string;
+  };
+}
+
 export interface WorkFiltersPayload {
   search: string;
   tagList_like?: string;
