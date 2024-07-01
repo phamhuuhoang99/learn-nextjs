@@ -35,7 +35,7 @@ export function PhotoField<T extends FieldValues>({
   // - null
   // - {file: File, previewUrl: string}
 
-  const previewUrl = value?.previewUrl || ClickToUpload;
+  const previewUrl = value?.['previewUrl'] || ClickToUpload;
   const inputField = `photo-field-${name}`;
 
   return (

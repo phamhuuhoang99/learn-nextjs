@@ -5,7 +5,7 @@ import { Button } from '@mui/material';
 import { Box } from '@mui/system';
 import { useForm } from 'react-hook-form';
 import * as yup from 'yup';
-import { AutocompleteField, InputField, PhotoField } from '../form';
+import { AutocompleteField, EditorField, InputField, PhotoField } from '../form';
 
 export interface WorkFormProps {
   initialValue?: Partial<WorkPayload>;
@@ -52,6 +52,7 @@ const WorkForm = ({ initialValue, onSubmit }: WorkFormProps) => {
             previewUrl: initialValue.thumbnailUrl,
           }
         : null,
+      fullDescription: '',
       ...initialValue,
     },
     resolver: yupResolver(schema),
@@ -88,6 +89,7 @@ const WorkForm = ({ initialValue, onSubmit }: WorkFormProps) => {
       />
 
       <PhotoField name="thumbnail" control={control} label="Thumbnail" />
+      <EditorField name="fullDescription" control={control} label="Full Description" />
       <Button variant="contained" type="submit">
         {initialValue?.id ? 'Save' : 'Submit'}
       </Button>
