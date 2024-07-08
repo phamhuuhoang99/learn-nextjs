@@ -23,6 +23,7 @@ const WorkForm = ({ initialValues, onSubmit }: WorkFormProps) => {
       .test('test-required', 'Please select an image.', (value, context) => {
         //required when add
         // optional when edit
+        // @ts-ignore
         if (Boolean(initialValues?.id) || Boolean(value?.file)) return true;
 
         return false;

@@ -9,6 +9,7 @@ import 'react-toastify/ReactToastify.min.css';
 import { SWRConfig } from 'swr';
 import '../styles/globals.css';
 import '../styles/prism.css';
+import { Auth } from '@/components/common';
 
 // Client-side cache, shared for the whole session of the user in the browser.
 const clientSideEmotionCache = createEmotionCache();
@@ -26,7 +27,9 @@ export default function App({
         <ToastContainer />
         <SWRConfig value={{ fetcher: (url) => axiosClient.get(url), shouldRetryOnError: false }}>
           <Layout>
-            <Component {...pageProps} />
+            <Auth requireLogin={Component.requireLogin ?? false}>
+              <Component {...pageProps} />
+            </Auth>
           </Layout>
         </SWRConfig>
       </ThemeProvider>

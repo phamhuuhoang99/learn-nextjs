@@ -4,17 +4,20 @@ import { useEffect } from 'react';
 
 interface AuthProps {
   children: any;
+  requireLogin?: boolean;
 }
 
-export function Auth({ children }: AuthProps) {
+export function Auth({ children, requireLogin = false }: AuthProps) {
   const router = useRouter();
   const { profile, firstLoading } = useAuth();
 
   useEffect(() => {
-    if (!firstLoading && !profile?.username) router.push('/login');
-  }, [router, firstLoading, profile]);
+    if (!requireLogin) return;
 
-  if (!profile?.username) return <p>Loading...</p>;
+    if (!firstLoading && !profile?.username) router.replace('/login');
+  }, [router, firstLoading, profile, requireLogin]);
+
+  if (requireLogin && !profile?.username) return <p>Loading...</p>;
 
   return <div>{children}</div>;
 }

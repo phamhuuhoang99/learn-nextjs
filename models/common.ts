@@ -6,8 +6,9 @@ import { ReactElement, ReactNode } from 'react';
 export interface LayoutProps {
   children: ReactNode;
 }
-export type NextPageWithLayout<P = {}, IP = P> = NextPage<P, IP> & {
+export type NextPageWithLayout = NextPage & {
   Layout?: (props: LayoutProps) => ReactElement;
+  requireLogin?: boolean;
 };
 
 export type AppPropsWithLayout = AppProps & {

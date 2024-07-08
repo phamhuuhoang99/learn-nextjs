@@ -43,6 +43,8 @@ export default function AddEditPageProps(props: AddEditPageProps) {
     }
   };
 
+  if (!router.isReady) return false;
+
   return (
     <Box>
       <Container>
@@ -68,3 +70,4 @@ export default function AddEditPageProps(props: AddEditPageProps) {
 }
 
 AddEditPageProps.Layout = MainLayout;
+AddEditPageProps.requireLogin = true;
