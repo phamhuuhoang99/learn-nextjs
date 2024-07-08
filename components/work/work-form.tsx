@@ -8,11 +8,11 @@ import * as yup from 'yup';
 import { AutocompleteField, EditorField, InputField, PhotoField } from '../form';
 
 export interface WorkFormProps {
-  initialValue?: Partial<WorkPayload>;
+  initialValues?: Partial<WorkPayload>;
   onSubmit?: (payload: FormData) => void;
 }
 
-const WorkForm = ({ initialValue, onSubmit }: WorkFormProps) => {
+const WorkForm = ({ initialValues, onSubmit }: WorkFormProps) => {
   const schema = yup.object().shape({
     title: yup.string().required('Please enter work title'),
     shortDescription: yup.string().required('Please enter work description'),
@@ -23,12 +23,13 @@ const WorkForm = ({ initialValue, onSubmit }: WorkFormProps) => {
       .test('test-required', 'Please select an image.', (value, context) => {
         //required when add
         // optional when edit
-        if (Boolean(initialValue?.id) || Boolean(value?.file)) return true;
+        if (Boolean(initialValues?.id) || Boolean(value?.file)) return true;
 
         return false;
       })
       .test('test-size', 'Maximum size exceeded', (value) => {
         // limit size to 3MB
+        // @ts-ignore
         const fileSize = value?.file?.['size'] || 0;
         const MB_TO_BYTES = 1024 * 1024;
         const MAX_SIZE = 3 * MB_TO_BYTES; // 3MB
@@ -39,29 +40,52 @@ const WorkForm = ({ initialValue, onSubmit }: WorkFormProps) => {
   const { data } = useTagList({});
   const tagList = data.data || [];
 
-  console.log('initialValue', initialValue);
-
   const { control, handleSubmit } = useForm<Partial<WorkPayload>>({
     defaultValues: {
       title: '',
       shortDescription: '',
       tagList: [],
-      thumbnail: initialValue?.id
+      thumbnail: initialValues?.id
         ? {
             file: null,
-            previewUrl: initialValue.thumbnailUrl,
+            previewUrl: initialValues.thumbnailUrl,
           }
         : null,
       fullDescription: '',
-      ...initialValue,
+      ...initialValues,
     },
     resolver: yupResolver(schema),
   });
 
-  const handleLoginSubmit = async (payload: Partial<WorkPayload>) => {
-    if (!payload) return;
-    console.log('form submit', payload);
-    // await onSubmit?.(payload);
+  const handleLoginSubmit = async (formValues: Partial<WorkPayload>) => {
+    if (!formValues) return;
+
+    const payload = new FormData();
+    if (formValues.id) {
+      payload.set('id', formValues.id);
+    }
+
+    if (formValues.thumbnail?.file) {
+      payload.set('thumbnail', formValues.thumbnail?.file);
+    }
+
+    formValues.tagList?.forEach((tag) => {
+      payload.append('tagList', tag);
+    });
+
+    const keyList: Array<keyof Partial<WorkPayload>> = [
+      'title',
+      'shortDescription',
+      'fullDescription',
+    ];
+
+    keyList.forEach((name) => {
+      if (initialValues?.[name] !== formValues[name]) {
+        payload.set(name, formValues[name] as string);
+      }
+    });
+
+    await onSubmit?.(payload);
   };
 
   return (
@@ -91,7 +115,7 @@ const WorkForm = ({ initialValue, onSubmit }: WorkFormProps) => {
       <PhotoField name="thumbnail" control={control} label="Thumbnail" />
       <EditorField name="fullDescription" control={control} label="Full Description" />
       <Button variant="contained" type="submit">
-        {initialValue?.id ? 'Save' : 'Submit'}
+        {initialValues?.id ? 'Save' : 'Submit'}
       </Button>
     </Box>
   );

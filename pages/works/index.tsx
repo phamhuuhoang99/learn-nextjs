@@ -3,7 +3,7 @@ import { WorkList } from '@/components/work';
 import WorksFilters from '@/components/work/work-filters';
 import { useWorkList } from '@/hooks/use-worklist';
 import { ListParams, WorkFiltersPayload } from '@/models';
-import { Box, Container, Pagination, Skeleton, Stack, Typography } from '@mui/material';
+import { Box, Button, Container, Pagination, Skeleton, Stack, Typography } from '@mui/material';
 import { useRouter } from 'next/router';
 
 export interface WorksPageProps {}
@@ -64,6 +64,9 @@ export default function WorksPage() {
           <Typography component="h1" variant="h3" fontWeight="bold">
             Work
           </Typography>
+          <Button variant="contained" onClick={() => router.push('/works/add')}>
+            Add new Work
+          </Button>
         </Box>
 
         {router.isReady ? (

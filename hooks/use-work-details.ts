@@ -19,5 +19,11 @@ export function useWorkDetails({ workId, options, enabled = true }: UseWorkDetai
       ...options,
     },
   );
-  return swrResponse;
+
+  async function updateWork(payload: FormData) {
+    const newWork = await workApi.update(payload);
+    swrResponse.mutate(newWork);
+  }
+
+  return { ...swrResponse, updateWork };
 }
