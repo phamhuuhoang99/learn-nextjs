@@ -1,7 +1,7 @@
 import { LoginForm } from '@/components/auth';
 import { useAuth } from '@/hooks';
 import { LoginPayload } from '@/models';
-import { getErrorMessage } from '@/utils';
+import { decodeUrl, getErrorMessage } from '@/utils';
 import { Box, Paper, Typography } from '@mui/material';
 import { useRouter } from 'next/router';
 import { toast } from 'react-toastify';
@@ -12,7 +12,8 @@ const LoginPage = () => {
   async function handleLogin(payload: LoginPayload) {
     try {
       await login(payload);
-      router.push('/');
+      const backTo = router.query?.back_to ? decodeUrl(router.query?.back_to as string) : '/';
+      router.push(backTo);
     } catch (error: unknown) {
       const message = getErrorMessage(error);
       toast.error(message);
