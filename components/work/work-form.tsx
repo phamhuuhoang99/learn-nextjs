@@ -55,6 +55,7 @@ const WorkForm = ({ initialValues, onSubmit }: WorkFormProps) => {
       fullDescription: '',
       ...initialValues,
     },
+    // @ts-ignore
     resolver: yupResolver(schema),
   });
 

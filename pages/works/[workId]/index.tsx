@@ -35,7 +35,7 @@ export default function AddEditPageProps(props: AddEditPageProps) {
         toast.success('update work successfully!');
       }
 
-      router.push('/works?_page=1&_limit=5');
+      router.push(`/works/${newWork?.id}/details`);
 
       //navigate to details
     } catch (error) {

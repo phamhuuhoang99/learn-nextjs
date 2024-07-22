@@ -3,6 +3,7 @@ import { Box, Container, Link as MuiLink, Stack } from '@mui/material';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { ROUTE_LIST } from './routes';
+import { encodeUrl } from '@/utils';
 
 const HeaderDesktop = () => {
   const router = useRouter();
@@ -27,7 +28,7 @@ const HeaderDesktop = () => {
             </Link>
           ))}
           {!isLoggedIn ? (
-            <Link href="/login" passHref legacyBehavior>
+            <Link href={`/login?back_to=${encodeUrl(router.asPath)}`} passHref legacyBehavior>
               <MuiLink sx={{ ml: 2, fontWeight: 'medium' }}>Login</MuiLink>
             </Link>
           ) : (
